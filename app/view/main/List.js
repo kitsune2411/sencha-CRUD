@@ -164,9 +164,11 @@ Ext.define('My.view.main.List', {
                             formBind: true,
                             handler: function () {
                                 var values = myForm.getValues();
-                                rec.set('name', values.name);
-                                rec.set('email', values.email);
-                                rec.set('phone', values.phone);
+                                var edit = rec.set({
+                                    name : values.name,
+                                    email: values.email,
+                                    phone: values.phone,
+                                });
                                 myForm.destroy();
                                 store.sync();
                             }
