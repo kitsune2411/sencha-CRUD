@@ -46,6 +46,13 @@ Ext.define('My.view.main.List', {
             width:100,
             flex:1,
             items: [{
+                iconCls: 'x-fa fa-eye',  
+                tooltip: 'Detail',
+                handler: 'onDetail'
+                
+            },{
+                disabled: true
+            },{
                 iconCls: 'x-fa fa-pen',  
                 tooltip: 'Edit',
                 handler: 'onEdit'

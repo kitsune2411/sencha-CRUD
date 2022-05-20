@@ -77,6 +77,61 @@ Ext.define('My.view.main.MainController', {
         }).show();
     }, 
 
+    onDetail: function (grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex)
+        var myForm = new Ext.form.Panel({
+            width: 400,
+            moveable: true,
+            height: 290,
+            title: 'Detail',
+            floating: true,
+            closable : true,
+            modal: true,
+            items: [{
+                xtype: 'fieldset',
+                title: 'Contact Information',
+                defaultType: 'textfield',
+                margin: '0 10 10 10',
+                items: [ {
+                    fieldLabel: 'Name',
+                    emptyText: 'Name',
+                    width: 340,
+                    bind: rec.get('name'),
+                    name: 'name',
+                    readOnly: true,
+                    allowBlank: false
+                },
+                {
+                    fieldLabel: 'Email',
+                    emptyText: 'email@mail.com',
+                    width: 340,
+                    name: 'email',
+                    bind: rec.get('email'),
+                    vtype: 'email',
+                    readOnly: true,
+                    allowBlank: false
+                }, 
+                {
+                    fieldLabel: 'Phone number',
+                    bind: rec.get('phone'),
+                    width: 340,
+                    name: 'phone',
+                    readOnly: true,
+                    allowBlank: false
+                }]
+            
+                
+            }],
+            buttons: [{
+                text: 'Close',
+                handler: function () {
+                    myForm.destroy();
+                }
+            }]
+                
+        }).show();
+    },
+
     onEdit: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex)
         var myForm = new Ext.form.Panel({
@@ -149,6 +204,6 @@ Ext.define('My.view.main.MainController', {
             }
         });
     },
-    
 
+    
 });
