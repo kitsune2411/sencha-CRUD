@@ -2,6 +2,8 @@
  * This class is the controller for the main view for the application. It is specified as
  * the "controller" of the Main view class.
  */
+var globalVar = "" || {};
+
 Ext.define('My.view.main.MainController', {
     extend: 'Ext.app.ViewController',
 
@@ -13,19 +15,18 @@ Ext.define('My.view.main.MainController', {
 
     onConfirm: function (choice, sender) {
         if (choice === 'yes') {
-            
+
         }
     },
 
     onAdd: function () {
-        var myForm = new Ext.form.Panel({
+        globalVar.myForm = new Ext.form.Panel({
             xtype: 'form-xml',
             width: 400,
             height: 290,
-            
             title: 'Add',
             floating: true,
-            closable : true,
+            closable: true,
             fullscreen: true,
             modal: true,
             items: [{
@@ -33,7 +34,7 @@ Ext.define('My.view.main.MainController', {
                 title: 'Contact Information',
                 defaultType: 'textfield',
                 margin: '0 10 10 10',
-                items: [ {
+                items: [{
                     fieldLabel: 'Name',
                     emptyText: 'Name',
                     width: 340,
@@ -47,7 +48,7 @@ Ext.define('My.view.main.MainController', {
                     name: 'email',
                     vtype: 'email',
                     allowBlank: false
-                }, 
+                },
                 {
                     fieldLabel: 'Phone number',
                     emptyText: 'xxx-xxx-xxxx',
@@ -55,28 +56,29 @@ Ext.define('My.view.main.MainController', {
                     name: 'phone',
                     allowBlank: false
                 }]
-            
+
             }],
             buttons: [{
                 text: 'Add',
                 disabled: true,
                 formBind: true,
-                handler: function () {
-                    var values = myForm.getValues();
-                    var store =  Ext.getStore('personnel');
-                    var add = store.insert(0, {
-                        name : values.name,
-                        email: values.email,
-                        phone: values.phone,
-                    });
-                    myForm.destroy();
-                    store.sync();
-                }
+                handler: 'onAddSubmit'
             }]
-                
-        }).show();
-    }, 
 
+        }).show();
+    },
+
+    onAddSubmit: function () {
+        var values = globalVar.myForm.getValues();
+        var store = Ext.getStore('personnel');
+        var add = store.insert(0, {
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+        });
+        globalVar.myForm.destroy();
+    },
+    
     onDetail: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex)
         var myForm = new Ext.form.Panel({
@@ -85,14 +87,14 @@ Ext.define('My.view.main.MainController', {
             height: 315,
             title: 'Detail',
             floating: true,
-            closable : true,
+            closable: true,
             modal: true,
             items: [{
                 xtype: 'fieldset',
                 title: 'Contact Information',
                 defaultType: 'displayfield',
                 margin: '0 10 0 10',
-                items: [ {
+                items: [{
                     fieldLabel: 'Name',
                     emptyText: 'Name',
                     value: rec.get('name'),
@@ -102,14 +104,14 @@ Ext.define('My.view.main.MainController', {
                     fieldLabel: 'Email',
                     name: 'email',
                     value: rec.get('email'),
-                }, 
+                },
                 {
                     fieldLabel: 'Phone number',
                     value: rec.get('phone'),
                     name: 'phone',
                 }]
-            
-                
+
+
             }],
             buttons: [{
                 text: 'Close',
@@ -117,31 +119,31 @@ Ext.define('My.view.main.MainController', {
                     myForm.destroy();
                 }
             }]
-                
+
         }).show();
     },
 
     onEdit: function (grid, rowIndex, colIndex) {
-        var rec = grid.getStore().getAt(rowIndex)
-        var myForm = new Ext.form.Panel({
+        globalVar.rec = grid.getStore().getAt(rowIndex)
+        globalVar.myForm = new Ext.form.Panel({
             xtype: 'form-xml',
             width: 400,
             moveable: true,
             height: 290,
             title: 'Edit',
             floating: true,
-            closable : true,
+            closable: true,
             modal: true,
             items: [{
                 xtype: 'fieldset',
                 title: 'Contact Information',
                 defaultType: 'textfield',
                 margin: '0 10 10 10',
-                items: [ {
+                items: [{
                     fieldLabel: 'Name',
                     emptyText: 'Name',
                     width: 340,
-                    bind: rec.get('name'),
+                    bind: globalVar.rec.get('name'),
                     name: 'name',
                     allowBlank: false
                 },
@@ -150,38 +152,39 @@ Ext.define('My.view.main.MainController', {
                     emptyText: 'email@mail.com',
                     width: 340,
                     name: 'email',
-                    bind: rec.get('email'),
+                    bind: globalVar.rec.get('email'),
                     vtype: 'email',
                     allowBlank: false
-                }, 
+                },
                 {
                     fieldLabel: 'Phone number',
-                    bind: rec.get('phone'),
+                    bind: globalVar.rec.get('phone'),
                     width: 340,
 
                     name: 'phone',
                     allowBlank: false
                 }]
-            
-                
+
+
             }],
             buttons: [{
                 text: 'Edit',
                 disabled: true,
                 formBind: true,
-                handler: function () {
-                    var values = myForm.getValues();
-                    var edit = rec.set({
-                        name : values.name,
-                        email: values.email,
-                        phone: values.phone,
-                    });
-                    myForm.destroy();
-                    store.sync();
-                }
+                handler: 'onEditSubmit'
             }]
-                
+
         }).show();
+    },
+
+    onEditSubmit: function () {
+        var values = globalVar.myForm.getValues();
+        var edit = globalVar.rec.set({
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+        });
+        globalVar.myForm.destroy();
     },
 
     onDelete: function (grid, rowIndex, colIndex) {
@@ -189,10 +192,9 @@ Ext.define('My.view.main.MainController', {
             if (choice === 'yes') {
                 var store = grid.getStore();
                 var del = store.remove(grid.getStore().getAt(rowIndex));
-                store.sync();            
             }
         });
     },
 
-    
+
 });
