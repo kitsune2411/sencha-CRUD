@@ -82,7 +82,7 @@ Ext.define('My.view.main.MainController', {
         var myForm = new Ext.form.Panel({
             width: 400,
             moveable: true,
-            height: 290,
+            height: 315,
             title: 'Detail',
             floating: true,
             closable : true,
@@ -90,34 +90,23 @@ Ext.define('My.view.main.MainController', {
             items: [{
                 xtype: 'fieldset',
                 title: 'Contact Information',
-                defaultType: 'textfield',
-                margin: '0 10 10 10',
+                defaultType: 'displayfield',
+                margin: '0 10 0 10',
                 items: [ {
                     fieldLabel: 'Name',
                     emptyText: 'Name',
-                    width: 340,
-                    bind: rec.get('name'),
+                    value: rec.get('name'),
                     name: 'name',
-                    readOnly: true,
-                    allowBlank: false
                 },
                 {
                     fieldLabel: 'Email',
-                    emptyText: 'email@mail.com',
-                    width: 340,
                     name: 'email',
-                    bind: rec.get('email'),
-                    vtype: 'email',
-                    readOnly: true,
-                    allowBlank: false
+                    value: rec.get('email'),
                 }, 
                 {
                     fieldLabel: 'Phone number',
-                    bind: rec.get('phone'),
-                    width: 340,
+                    value: rec.get('phone'),
                     name: 'phone',
-                    readOnly: true,
-                    allowBlank: false
                 }]
             
                 
