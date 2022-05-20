@@ -15,7 +15,8 @@ Ext.define('My.view.main.Main', {
 
         'My.view.main.MainController',
         'My.view.main.MainModel',
-        'My.view.main.List'
+        'My.view.main.List',
+        'My.view.main.Dashboard',
     ],
 
     controller: 'main',
@@ -74,7 +75,15 @@ Ext.define('My.view.main.Main', {
         }
     },
 
-    items: [{
+    items: [
+    {
+        title: 'Dashboard',
+        iconCls: 'x-fa fa-desktop',
+        items: [{
+            xtype: 'dashboard'
+        }]
+    }, 
+    {
         title: 'Users',
         iconCls: 'fa-user',
         // The following grid shares a store with the classic version's grid as well!
@@ -82,13 +91,6 @@ Ext.define('My.view.main.Main', {
             xtype: 'mainlist'
         }]
     }, 
-    // {
-    //     title: 'Users',
-    //     iconCls: 'fa-user',
-    //     bind: {
-    //         html: '{loremIpsum}'
-    //     }
-    // }, 
     // {
     //     title: 'Groups',
     //     iconCls: 'fa-users',
